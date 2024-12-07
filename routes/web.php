@@ -8,13 +8,15 @@ use App\Http\Controllers\RekomendasiController;
 use App\Http\Controllers\CekKesehatanController;
 use App\Http\Controllers\AuthenticationController;
 
+
+Route::get('/',[HomeController::class, 'landing_page'])->name('home.landing_page');
 Route::get('/login',[AuthenticationController::class, 'loginview'])->name('login');
 Route::post('/login',[AuthenticationController::class,'authentication'])->name('auth.authentication');
 Route::get('/register',[AuthenticationController::class, 'registerview'])->name('register');
 Route::post('/register',[AuthenticationController::class,'registration'])->name('auth.registration');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', [HomeController::class, 'index'])->name('home.index');
+    Route::get('/home', [HomeController::class, 'index'])->name('home.index');
     Route::get('/ruang-bertanya', [RuangTanyaController::class, 'index'])->name('ruang-bertanya.index');
     Route::post('/chat', [RuangTanyaController::class, 'sendMessage'])->name('ruang-bertanya.chat');
     Route::get('/rekomendasi', [RekomendasiController::class, 'index'])->name('rekomendasi.index');

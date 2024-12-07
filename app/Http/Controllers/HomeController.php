@@ -9,4 +9,7 @@ class HomeController extends Controller
     public function index(){
         return view('index');
     }
+    public function landing_page(){
+        return view('landing.index');
+    }
 }

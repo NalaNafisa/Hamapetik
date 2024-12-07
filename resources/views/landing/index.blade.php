@@ -73,13 +73,15 @@
 <body>
     <div class="container">
         <div class="logo">
-            <img src="C:\tani_hamaPetik\public\asset\hamapetik.png" alt="Logo">
+            <img src="" alt="Logo">
             <h1>HamaPetik</h1>
         </div>
-        <img src="C:\tani_hamaPetik\public\asset\icon\trees.jpg" alt="Tree" class="tree-image">
+        <img src="" alt="Tree" class="tree-image">
         <button class="button">Mulai</button>
         <div class="text">Tanaman anda tanggung
             jawab anda</div>
+        
+        <a href="{{route('login')}}">Login</a>
     </div>
 </body>
 </html>
