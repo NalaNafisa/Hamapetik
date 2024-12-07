@@ -26,30 +26,29 @@ class RuangTanyaController extends Controller
     public function callChatbotAPI($message)
     {
         Log::info('Calling chatbot API with message', ['message' => $message]);
-    
+
         $client = new Client();
         try {
             // Kirim permintaan POST ke API
-            $response = $client->post('AIzaSyATpx6W1uWyPw7ymXobT9YG5CmEPLoxDw8' . env('GEMINI_API_KEY'), [
+            $response = $client->post('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' . env('GEMINI_API_KEY'), [
                 'headers' => [
                     'Content-Type' => 'application/json',
                 ],
                 'json' => [
-                    "contents" => [
+                    'contents' => [
                         [
-                            "parts" => [
+                            'parts' => [
                                 [
-                                    "text" => $message
+                                    'text' => $message,
                                 ],
-                            ]
-                        ]
+                            ],
+                        ],
                     ],
-                ]
+                ],
             ]);
-    
             // Dapatkan respons dari API
             $responseBody = json_decode($response->getBody(), true);
-            
+
             // Validasi respons API
             if (isset($responseBody['candidates'][0]['content']['parts'][0]['text'])) {
                 return $responseBody['candidates'][0]['content']['parts'][0]['text'];
@@ -68,38 +67,38 @@ class RuangTanyaController extends Controller
             }
         }
     }
-    
+
     public function sendMessage(Request $request)
-{
-    Log::info('Send message initiated', ['user_id' => Auth::id(), 'content' => $request->input('content')]);
+    {
+        Log::info('Send message initiated', ['user_id' => Auth::id(), 'content' => $request->input('content')]);
 
-    // Find or create a conversation
-    $conversation = Conversation::firstOrCreate(['user_id' => Auth::id()]);
+        // Find or create a conversation
+        $conversation = Conversation::firstOrCreate(['user_id' => Auth::id()]);
 
-    // Save user message
-    $userMessage = new Message([
-        'conversation_id' => $conversation->id,
-        'sender' => 'user',
-        'content' => $request->input('content')
-    ]);
-    $userMessage->save();
+        // Save user message
+        $userMessage = new Message([
+            'conversation_id' => $conversation->id,
+            'sender' => 'user',
+            'content' => $request->input('content')
+        ]);
+        $userMessage->save();
 
-    Log::info('User  message saved', ['message_id' => $userMessage->id]);
+        Log::info('User  message saved', ['message_id' => $userMessage->id]);
 
-    // Call chatbot API and save response
-    $responseContent = $this->callChatbotAPI($request->input('content'));
+        // Call chatbot API and save response
+        $responseContent = $this->callChatbotAPI($request->input('content'));
 
-    $botMessage = new Message([
-        'conversation_id' => $conversation->id,
-        'sender' => 'bot',
-        'content' => $responseContent
-    ]);
-    $botMessage->save();
+        $botMessage = new Message([
+            'conversation_id' => $conversation->id,
+            'sender' => 'bot',
+            'content' => $responseContent
+        ]);
+        $botMessage->save();
 
-    Log::info('Bot response saved', ['message_id' => $botMessage->id]);
+        Log::info('Bot response saved', ['message_id' => $botMessage->id]);
 
-    return response()->json($responseContent);
-}
+        return response()->json($responseContent);
+    }
 
     public function deleteHistory()
     {
