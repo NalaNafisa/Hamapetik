@@ -45,7 +45,7 @@
                         </div>
                         <p class="text-gray-800 text-sm !mt-8 text-center">Don't have an account? <a
                                 href="{{ route('register') }}"
-                                class="ml-1 font-semibold text-blue-600 hover:underline whitespace-nowrap">Register
+                                class="ml-1 font-semibold text-green-600 hover:underline whitespace-nowrap">Register
                                 here</a></p>
                     </form>
                 </div>

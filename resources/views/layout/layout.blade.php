@@ -42,7 +42,7 @@
 
 <body>
     <main class="flex items-start justify-center bg-gray-100">
-        <div class="w-full max-w-md px-4 mx-auto ">
+        <div class="w-full container px-4 mx-auto ">
             @yield('content')
         </div>
     </main>
