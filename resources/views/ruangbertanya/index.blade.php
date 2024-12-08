@@ -1,7 +1,7 @@
 @extends('layout.layout')
 @section('title', 'Ruang Bertanya')
 @section('content')
-<div class="mx-auto">
+<div class="mx-auto h-max">
     <div class="flex items-center justify-center mb-4">
         <div class="flex items-center justify-between w-full mt-5">
             <a href="{{ route('home.index') }}" class="flex items-center">
@@ -29,9 +29,8 @@
     <hr class="mb-4 border-gray-300">
     <div class="text-center">
         <p class="mb-2 text-lg font-medium text-gray-400 font-poppins">Selamat datang di Ruang Diskusi HamaPetik</p>
-        <p class="mb-4 text-base text-gray-400 font-poppins font-regular">Selasa, 19 Feb 2024</p>
     </div>
-    <div id="chatbox" class="h-screen p-4 overflow-y-auto">
+    <div id="chatbox" class=" p-4 overflow-y-auto">
         <div class="p-4 pb-36">
             @foreach ($messages as $message)
             @if ($message->sender === 'user')
@@ -65,17 +64,17 @@
             </div>
         </div>
     </div>
+    <form id="chat-form">
+        <div class="flex items-center p-4 mb-4 bg-white rounded-lg shadow-md" style="border-radius: 28px;">
+            <input type="text" id="message" class="flex-grow p-2 bg-transparent border border-gray-300 rounded-md"
+                placeholder="Tulis pesan...">
+            <button type="submit" class="flex items-center justify-center w-12 h-12 ml-4 bg-green-600 rounded-full">
+                <img src="https://img.icons8.com/ios-filled/50/ffffff/paper-plane.png" alt="Send" class="w-6 h-6">
+            </button>
+        </div>
+    </form>
 </div>
 
-<form id="chat-form">
-    <div class="flex items-center p-4 mb-4 bg-white rounded-lg shadow-md" style="border-radius: 28px;">
-        <input type="text" id="message" class="flex-grow p-2 bg-transparent border border-gray-300 rounded-md"
-            placeholder="Tulis pesan...">
-        <button type="submit" class="flex items-center justify-center w-12 h-12 ml-4 bg-green-600 rounded-full">
-            <img src="https://img.icons8.com/ios-filled/50/ffffff/paper-plane.png" alt="Send" class="w-6 h-6">
-        </button>
-    </div>
-</form>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>

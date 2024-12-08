@@ -34,16 +34,27 @@ class RekomendasiController extends Controller
         // Tangkap parameter pencarian dari request
         $searchQuery = $request->input('search');
 
+        // Variabel untuk menyimpan hasil pencarian
+        $searchResults = [];
+
         if ($searchQuery) {
-            foreach ($data as $key => &$category) {
-                $category['data'] = array_filter($category['data'], function ($row) use ($searchQuery) {
-                    // Lakukan pencarian pada setiap kolom dalam baris
-                    return collect($row)->contains(function ($value) use ($searchQuery) {
-                        return stripos($value, $searchQuery) !== false;
-                    });
+            foreach ($data as $key => $category) {
+                $categoryResults = array_filter($category['data'], function ($row) use ($searchQuery) {
+                    // Lakukan pencarian pada nama produk (kolom ke-2)
+                    return stripos(strtolower($row[2]), strtolower($searchQuery)) !== false;
                 });
+
+                if (!empty($categoryResults)) {
+                    $searchResults[$key] = $categoryResults;
+                }
+            }
+
+            // Jika ada hasil pencarian, gunakan hasil pencarian
+            if (!empty($searchResults)) {
+                $data = $searchResults;
             }
         }
+        // dd($data);
 
         return view('rekomendasi.index', compact('data', 'searchQuery'));
     }

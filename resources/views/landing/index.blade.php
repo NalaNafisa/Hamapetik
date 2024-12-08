@@ -10,7 +10,7 @@
 
 <body class="bg-teal-100">
     <!-- Navbar -->
-    <nav class="bg-white shadow-md">
+    <nav class="bg-white shadow-md z-20">
         <div class="container mx-auto px-4 py-3 flex items-center justify-between">
             <!-- Logo -->
             <div class="flex items-center">
@@ -19,9 +19,6 @@
             </div>
             <!-- Navigation Links -->
             <div class="hidden md:flex space-x-4">
-                <a href="#" class="text-gray-700 hover:text-green-500">Beranda</a>
-                <a href="#fitur" class="text-gray-700 hover:text-green-500">Fitur</a>
-                <a href="#kontak" class="text-gray-700 hover:text-green-500">Kontak</a>
                 <a href="{{route('login')}}" class="text-green-500 font-bold hover:text-green-600">Login</a>
             </div>
             <!-- Mobile Menu Button -->
@@ -41,7 +38,7 @@
     </nav>
 
     <!-- Content -->
-    <div class="flex items-center justify-center min-h-screen">
+    <div class="flex items-center z-10 justify-center min-h-screen">
         <div class="bg-white p-6 rounded-lg shadow-md text-center max-w-xl w-full mx-auto md:max-w-2xl lg:max-w-4xl">
             <div class="flex flex-col md:flex-row items-center justify-center mb-6">
                 <h1 class="text-2xl font-bold ml-0 md:ml-3 mt-3 md:mt-0">Selamatkan Tanaman Anda dari Hama dengan Mudah!</h1>

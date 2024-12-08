@@ -5,7 +5,10 @@
         <div class="flex flex-col items-center justify-center min-h-screen px-4 py-6">
             <div class="w-full max-w-md">
                 <div class="p-8 bg-white shadow rounded-2xl">
-                    <h2 class="text-2xl font-bold text-center text-gray-800">Login</h2>
+                <div class="flex items-center justify-center mb-4">
+                <img src="asset/icon/image_logo.png" alt="Logo" class="w-8 h-8 mr-2">
+                <h2 class="text-2xl font-bold text-gray-800">Login</h2>
+            </div>
                     <form class="mt-8 space-y-4" action="{{ route('auth.authentication') }}" method="POST">
                         @csrf
                         @if ($errors->has('login'))
@@ -39,13 +42,13 @@
 
                         <div class="!mt-8">
                             <button type="submit"
-                                class="w-full px-4 py-3 text-sm tracking-wide text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none">
+                                class="w-full px-4 py-3 text-sm tracking-wide text-white bg-green-600 rounded-lg hover:bg-green-500 focus:outline-none">
                                 Sign in
                             </button>
                         </div>
                         <p class="text-gray-800 text-sm !mt-8 text-center">Don't have an account? <a
                                 href="{{ route('register') }}"
-                                class="ml-1 font-semibold text-green-600 hover:underline whitespace-nowrap">Register
+                                class="ml-1 font-semibold text-green-500 hover:underline whitespace-nowrap">Register
                                 here</a></p>
                     </form>
                 </div>

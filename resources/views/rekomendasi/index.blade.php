@@ -41,65 +41,88 @@
             <img src="{{ asset('asset/icon/tanaman.png') }}" alt="tanaman" class="mb-4">
         </div>
     </div>
-    
-    <div class="flex items-center p-4 mb-4 bg-white shadow-md rounded-xl">
-        <p class=" text-gray-400 font-poppins">Cari Pupuk</p>
-    </div>
-   
-    <div class="h-screen">
-        {{-- Pupuk Organik --}}
-        <div class="py-3">
-            <p class="mb-2 text-xl font-poppins font-medium">Pupuk Organik</p>
-            <div class="flex space-x-4 overflow-x-auto hide-scrollbar whitespace-nowrap hover-scrollbar">
-                @foreach ($data['Organik']['data'] as $allData)
-                    <div class="w-36 h-36 bg-gray-300 rounded-lg flex-shrink-0">
-                        <a href="{{ $allData[4] }}">
-                            <img src="{{ $allData[6] }}" alt="Pupuk" class="object-cover w-full h-full">
-                        </a>
+    <div class="container mx-auto px-4">
+
+
+        {{-- Tampilan Produk Secara Detail --}}
+        @forelse ($data as $category => $categoryData)
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Pupuk {{ $category }}</h2>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                @forelse ($categoryData['data'] as $product)
+                <div class="bg-white shadow-md rounded-lg overflow-hidden transform transition duration-300 hover:scale-105">
+                    {{-- Gambar Produk --}}
+                    <div class="h-48 w-full">
+                        <img
+                            src="{{ $product[6] }}"
+                            alt="{{ $product[0] }}"
+                            class="w-full h-full object-cover">
                     </div>
-                @endforeach
-            </div>
-        </div>
-    
-        {{-- Pupuk Anorganik --}}
-        <div class="py-3">
-            <p class="mb-2 text-xl font-poppins font-medium">Pupuk Anorganik</p>
-            <div class="flex space-x-4 overflow-x-auto hide-scrollbar whitespace-nowrap hover-scrollbar">
-                @foreach ($data['Anorganik']['data'] as $allData)
-                    <div class="w-36 h-36 bg-gray-300 rounded-lg flex-shrink-0">
-                        <a href="{{ $allData[4] }}">
-                            <img src="{{ $allData[6] }}" alt="Pupuk" class="object-cover w-full h-full">
-                        </a>
+
+                    {{-- Informasi Produk --}}
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-2 truncate">{{ $product[0] }}</h3>
+
+                        {{-- Harga --}}
+                        <div class="flex justify-between items-center">
+                            <span class="text-green-600 font-semibold">
+                                {{ $product[1] }}
+                            </span>
+
+                            {{-- Tombol Beli --}}
+                            <a
+                                href="{{ $product[4] }}"
+                                target="_blank"
+                                class="bg-green-500 text-white px-3 py-1 rounded-full text-sm hover:bg-green-600 transition">
+                                lihat detail
+                            </a>
+                        </div>
+
+                        {{-- Detail Tambahan --}}
+                        <div class="mt-2 text-sm text-gray-600">
+                            <p>Toko: {{ $product[5] }}</p>
+                            <p>Rating: {{ $product[2] }}</p>
+                            <p>Terjual: {{ $product[3] }}</p>
+                        </div>
                     </div>
-                @endforeach
-            </div>
-        </div>
-    
-        {{-- Pupuk Cair --}}
-        <div class="py-3">
-            <p class="mb-2 text-xl font-poppins font-medium">Pupuk Cair</p>
-            <div class="flex space-x-4 overflow-x-auto hide-scrollbar whitespace-nowrap hover-scrollbar">
-                @foreach ($data['Cair']['data'] as $allData)
-                <div class="w-36 h-36 bg-gray-300 rounded-lg flex-shrink-0">
-                    <a href="{{ $allData[4] }}">
-                        <img src="{{ $allData[6] }}" alt="Pupuk" class="object-cover w-full h-full">
-                    </a>
                 </div>
-            @endforeach
+                @empty
+                <div class="col-span-full text-center py-8">
+                    <p class="text-xl text-gray-500">Tidak ada produk ditemukan</p>
+                </div>
+                @endforelse
             </div>
         </div>
+        @empty
+        <div class="text-center py-10">
+            <p class="text-2xl text-gray-500">Tidak ada produk yang tersedia</p>
+        </div>
+        @endforelse
     </div>
-    
-    
 </div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Efek hover pada produk
+        const productCards = document.querySelectorAll('.transform');
+        productCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.classList.add('shadow-xl');
+            });
+            card.addEventListener('mouseleave', function() {
+                this.classList.remove('shadow-xl');
+            });
+        });
+    });
     const axios = require('axios');
     const cheerio = require('cheerio');
 
     async function scrapeTokopedia(url) {
         try {
-            const { data } = await axios.get(url);
+            const {
+                data
+            } = await axios.get(url);
             const $ = cheerio.load(data);
 
             // Ganti selector sesuai dengan struktur HTML Tokopedia
@@ -117,8 +140,7 @@
         }
     }
 
-// Panggil fungsi dengan URL kategori
-scrapeTokopedia('https://www.tokopedia.com/p/rumah-tangga/taman/pupuk');
-
+    // Panggil fungsi dengan URL kategori
+    scrapeTokopedia('https://www.tokopedia.com/p/rumah-tangga/taman/pupuk');
 </script>
 @endsection

@@ -61,10 +61,10 @@ class AuthenticationController extends Controller
         ]);
 
         // Login user setelah registrasi
-        Auth::login($user);
+        // Auth::login($user);
 
         // Redirect ke halaman yang diinginkan
-        return redirect()->route('home.index')->with('success', 'Registration successful. Welcome!');
+        return redirect()->route('login')->with('success', 'Registration successful. Welcome!');
     }
     public function logout(Request $request)
     {

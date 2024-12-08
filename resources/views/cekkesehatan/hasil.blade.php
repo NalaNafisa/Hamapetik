@@ -37,7 +37,8 @@
 
 <div class="px-4">
     <h3 class="mb-2 text-lg font-semibold">Deskripsi Gambar:</h3>
-    <p class="text-gray-700">{{ session('result') }}</p>
+    <div class="text-gray-700">{!! session('result')!!}</div>
 </div>
+
 @endif
 @endsection

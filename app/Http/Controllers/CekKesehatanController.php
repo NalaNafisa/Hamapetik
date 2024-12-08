@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Exception\RequestException;
+use Parsedown;
 
 class CekKesehatanController extends Controller
 {
@@ -51,7 +52,7 @@ class CekKesehatanController extends Controller
                         [
                             "parts" => [
                                 [
-                                    "text" => "apa yang ada di dalam gambar ini? deskripsikan dengan detail mengenai gambar ini"
+                                    "text" => "berikan penjelasan dalam bahasa indonesia Apa jenis tanaman yang terkena penyakit?berikan penjelasan singkat tengtang penyakit yang dialami tanaman tersebut Apakah penyebab dari penyakitnya?berikan jenis perawatan dan pengobatan nya dan rekomendasi jenis atau kandungan obat untuk menangani penyakitnya jelas kan jika itu bukan sebuah gambar atau foto tanaman berikan penjelasan tengtang gambar itu dan apa yang terjadi pada benda itu ata kerusakan yang terjadi pada benda itu "
                                 ],
                                 [
                                     "inline_data" => [
@@ -70,10 +71,13 @@ class CekKesehatanController extends Controller
 
             // Ambil teks dari respons
             $description = $responseBody['candidates'][0]['content']['parts'][0]['text'];
+            $Parsedown = new Parsedown();
+
+            $markedDesc = $Parsedown->text($description);
 
             // Redirect dengan data hasil API dan URL gambar
             return redirect()->route('cek-kesehatan.hasil')->with([
-                'result' => $description,
+                'result' => $markedDesc,
                 'image' => $imageUrl,
             ]);
         } catch (RequestException $e) {
