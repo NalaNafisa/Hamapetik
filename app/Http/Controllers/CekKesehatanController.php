@@ -19,16 +19,20 @@ class CekKesehatanController extends Controller
     {
         // Ambil data foto dari permintaan
         $photoData = $request->input('photo');
-
+        
         // Dekode data base64
         list($type, $photoData) = explode(';', $photoData);
         list(, $photoData) = explode(',', $photoData);
-        $photoData = base64_decode($photoData);
+        $imageDecoded = $photoData;
+        // dd($imageDecoded);
+        // $photoData = base64_decode($photoData);
 
+        // $extension = explode("/", mime_content_type($imageDecoded))[1]; // Mengambil
         // Simpan foto ke penyimpanan
         $fileName = Str::random(10) . '.jpg';
-        Storage::put('public/photos/' . $fileName, $photoData);
 
+        Storage::put('public/photos/' . $fileName, base64_decode($imageDecoded));
+        
         // Dapatkan URL gambar
         $filePath = 'public/photos/' . $fileName;
         $imageUrl = Storage::url($filePath);
@@ -38,7 +42,7 @@ class CekKesehatanController extends Controller
 
         try {
             // Kirim permintaan POST ke API
-            $response = $client->post('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBCm3oJuCL8Et2QCPSWg3wb0ux8fBSeKEM' . env('GEMINI_API_KEY'), [
+            $response = $client->post('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' . env('GEMINI_API_KEY'), [
                 'headers' => [
                     'Content-Type' => 'application/json',
                 ],
@@ -52,7 +56,7 @@ class CekKesehatanController extends Controller
                                 [
                                     "inline_data" => [
                                         "mime_type" => "image/jpeg",
-                                        "data" => base64_encode($photoData)  // Menggunakan data base64 gambar
+                                        "data" => $imageDecoded  // Menggunakan data base64 gambar
                                     ]
                                 ]
                             ]
